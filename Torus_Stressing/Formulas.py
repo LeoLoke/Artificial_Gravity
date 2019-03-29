@@ -60,7 +60,9 @@ def volume_of_hollow_torus(total_radius, outer_radius, wall_thickness):
     if total_radius <= 0 or outer_radius <= 0 or wall_thickness <= 0:
         raise ArithmeticError('One of the passed arguments is less then or equal to zero')
 
-    volume = volume_of_solid_torus(total_radius, outer_radius - wall_thickness)
+    volume = \
+        Decimal(2) * Decimal(pi ** 2) * \
+        Decimal(total_radius - outer_radius) * Decimal((outer_radius - wall_thickness) ** 2)
 
     if volume < 0:
         raise ArithmeticError(
@@ -76,11 +78,11 @@ def volume_of_torus_wall(total_radius, outer_radius, wall_thickness):
         raise ArithmeticError('One of the passed arguments is less then or equal to zero')
 
     volume = volume_of_solid_torus(total_radius, outer_radius) - \
-        volume_of_solid_torus(total_radius, outer_radius - wall_thickness)
+        volume_of_hollow_torus(total_radius, outer_radius, wall_thickness)
 
     if volume < 0:
         raise ArithmeticError(
-            'Total radius to small in proportion to outer radius, 3D space overlap causes volume to '
+            'Total radius too small in proportion to outer radius, 3D space overlap causes volume to '
             'come out as negative. Use alternative equation'
         )
 

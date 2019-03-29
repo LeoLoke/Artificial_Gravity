@@ -10,6 +10,8 @@ superscript = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
 # In feet
 ft_per_story = Decimal(12)
 
+draw = False
+
 
 def run():
 
@@ -29,7 +31,11 @@ def run():
     density_of_material = Decimal(Conversions.g_cm3_to_kg_m3(density_of_material))
 
     # Max tensile strength of the material given in MPa
-    tensile_strength = Decimal(290)
+    tensile_strength = Decimal(248)
+
+    if wall_thickness > outer_radius:
+        print("Wall thickness cannot be bigger than the outer radius and will be clamped to that number")
+        wall_thickness = outer_radius
 
     # Find a lot of common variables which are used often in other equations
     linear_velocity = Formulas.linear_speed_rotational(total_radius, acceleration)
@@ -42,7 +48,7 @@ def run():
     )
 
     # Volume of torus wall
-    print('Volume of torus wall(hollow): ' +
+    print('Volume of torus wall(internal): ' +
           str(round(volume_of_walls, pretty_round)) +
           ' m3'.translate(superscript)
           )
@@ -116,7 +122,8 @@ def run():
               ' MPa in excess (' + str(100 * (1 - round((tensile_strength - stress) / tensile_strength, 2)))
               + "% of total applicable)")
 
-    Drawing.draw_torus(total_radius, outer_radius, kind=GraphType.MPL, z_ratio=0)
+    if draw:
+        Drawing.draw_torus(total_radius, outer_radius, kind=GraphType.MPL, z_ratio=0)
 
 
 if __name__ == "__main__":

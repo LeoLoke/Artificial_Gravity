@@ -15,8 +15,7 @@ def inch_to_feet(inches):
 
 
 def feet_to_inch(feet):
-    return Formulas.round_floating_point(Decimal(feet / 12)
-    )
+    return Formulas.round_floating_point(Decimal(feet / 12))
 
 
 def meter_to_feet(meter):
